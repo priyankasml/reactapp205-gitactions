@@ -13,6 +13,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Go into subfolder if project is not at root
+      - name: Change to project directory
+        run: cd demoreactapp
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -20,12 +24,14 @@ jobs:
 
       - name: Install dependencies
         run: npm install
+        working-directory: ./demoreactapp
 
       - name: Build the app
         run: npm run build
+        working-directory: ./demoreactapp
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+        uses: peaceiris/actions-gh-pages@v5
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ./demoreactapp/dist
